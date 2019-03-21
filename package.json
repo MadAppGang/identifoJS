@@ -16,7 +16,7 @@
     "identifo"
   ],
   "author": "MadAppGang",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "idtoken-verifier": "^1.2.0"
   },
