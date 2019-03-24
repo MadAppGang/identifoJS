@@ -21,7 +21,7 @@ export default [
 		]
 	},
 
-	// CommonJS (for Node) and ES module (for bundlers) build.
+	// ES module (for bundlers) build.
 	{
 		input: 'src/index.js',
 		external: ['idtoken-verifier'],
