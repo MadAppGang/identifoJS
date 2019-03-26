@@ -66,7 +66,7 @@ export default (options) => {
       }
 
       const body = tokenService.decode(token);
-      return { body, token };
+      res({ body, token });
     };
 
     window.addEventListener('message', handleMessage);
