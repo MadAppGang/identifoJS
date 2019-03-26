@@ -73,9 +73,15 @@ export default (options) => {
     iframe.src = `${options.authServerURI}/web/token/renew?appId=${options.appId}&scopes=${scopes}`;
   });
 
+  const register = () => {
+    const registerURL = `${options.authServerURI}/web/register?appId=${options.appId}&scopes=${scopes}`;
+    window.location.assign(registerURL);
+  }
+
   return {
     handleAuthentication,
     login,
+    register,
     renewSession,
   };
 };
