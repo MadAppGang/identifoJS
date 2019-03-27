@@ -1,2 +1,2 @@
 export { default as initValidator } from './validator';
-export { requiredRule, makeValidTypeRule, validURLRule } from './rules';
+export { requiredRule, makeTypeValidationRule, URLValidationRule } from './rules';

@@ -1,4 +1,4 @@
-const makeCheckIsValidType = (type) => {
+const makeCheckTypeValidity = (type) => {
   if (type === 'array') {
     return value => Array.isArray(value);
   }
@@ -6,7 +6,7 @@ const makeCheckIsValidType = (type) => {
   return value => typeof value === type;
 };
 
-const checkIsPresented = value => value !== undefined;
+const checkPresence = value => value !== undefined;
 
 const checkURL = (value) => {
   try {
@@ -19,16 +19,16 @@ const checkURL = (value) => {
 };
 
 export const requiredRule = {
-  check: checkIsPresented,
+  check: checkPresence,
   error: ({ name }) => Error(`Field "${name}" is required.`),
 };
 
-export const makeValidTypeRule = ({ type }) => ({
-  check: makeCheckIsValidType(type),
+export const makeTypeValidationRule = ({ type }) => ({
+  check: makeCheckTypeValidity(type),
   error: ({ name }) => Error(`Field "${name}" has to be a type of "${type}".`),
 });
 
-export const validURLRule = {
+export const URLValidationRule = {
   check: checkURL,
   error: ({ name }) => Error(`Field "${name}" has to be a valid URL`),
 };

@@ -33,11 +33,6 @@ const init = function (options) {
     return { token, body };
   };
 
-  const login = function () {
-    const loginURL = URLCreator.createLoginURL();
-    window.location.assign(loginURL);
-  };
-
   const renewSession = () => new Promise((resolve, reject) => {
     const iframe = Iframe.create();
 
@@ -61,6 +56,10 @@ const init = function (options) {
         resolve({ token, body });
       });
   });
+
+  const login = function () {
+    window.location.assign(URLCreator.createLoginURL());
+  };
 
   const register = function () {
     window.location.assign(URLCreator.createRegistrationURL());
