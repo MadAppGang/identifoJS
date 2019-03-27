@@ -1,5 +1,6 @@
 import validateOptions from './optionsValidation';
 import initTokenService from './tokenService';
+import initURLCreator from './URLCReator';
 
 const NoAccessTokenError = Error('Access token is empty');
 const TimeoutExpiredError = Error('Timeout expired');
@@ -16,7 +17,7 @@ const init = function (options) {
     audience: options.appId,
   });
 
-  const scopes = JSON.stringify(options.scopes);
+  const URLCreator = initURLCreator(options);
 
   const handleAuthentication = function () {
     const token = tokenService.parseTokenFromURL(window.location);
@@ -31,8 +32,13 @@ const init = function (options) {
     return { token, body };
   };
 
+<<<<<<< HEAD
   const login = function () {
     const loginURL = `${options.authServerURI}/web/login?appId=${options.appId}&scopes=${scopes}`;
+=======
+  const login = () => {
+    const loginURL = URLCreator.createLoginURL();
+>>>>>>> master
     window.location.assign(loginURL);
   };
 
@@ -84,12 +90,18 @@ const init = function (options) {
 
       const body = tokenService.decode(token);
 
+<<<<<<< HEAD
       resolve({ token, body });
     });
+=======
+    window.addEventListener('message', handleMessage);
+    const renewSessionURL = URLCreator.createRenewSessionURL();
+    iframe.src = renewSessionURl;
+>>>>>>> master
   });
 
   const register = () => {
-    const registerURL = `${options.authServerURI}/web/register?appId=${options.appId}&scopes=${scopes}`;
+    const registrationURL = URLCreator.createRegistrationURL();
     window.location.assign(registerURL);
   }
 
