@@ -1,5 +1,5 @@
 {
-  "name": "identifo-js",
+  "name": "@madappgang/identifo-js",
   "version": "1.0.0",
   "description": "Library for web-auth through Identifo",
   "module": "dist/identifo-js.esm.js",
