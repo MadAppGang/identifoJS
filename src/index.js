@@ -1,6 +1,7 @@
 import validateOptions from './optionsValidation';
 import initTokenService from './tokenService';
 import initURLCreator from './URLCReator';
+import Iframe from './iframe';
 
 const NoAccessTokenError = Error('Access token is empty');
 const TimeoutExpiredError = Error('Timeout expired');
@@ -32,85 +33,48 @@ const init = function (options) {
     return { token, body };
   };
 
-<<<<<<< HEAD
   const login = function () {
-    const loginURL = `${options.authServerURI}/web/login?appId=${options.appId}&scopes=${scopes}`;
-=======
-  const login = () => {
     const loginURL = URLCreator.createLoginURL();
->>>>>>> master
     window.location.assign(loginURL);
   };
 
-  const createIframe = function () {
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-    return iframe;
-  };
-
-  const captureWindowMessage = iframe => new Promise((resolve, reject) => {
-    const handleMessage = (event) => {
-      if (event.origin === window.location.origin) {
-        return;
-      }
-
-      resolve(event.data);
-
-      window.removeEventListener('message', handleMessage);
-    };
-
-    window.addEventListener('message', handleMessage);
-
-    // iframe.src = `${options.authServerURI}/web/token/renew?appId=${options.appId}&scopes=${scopes}`;
-    iframe.embed();
-  });
-
   const renewSession = () => new Promise((resolve, reject) => {
-    const iframe = createIframe();
-
-    const cleanup = () => {
-      document.body.removeChild(iframe);
-    }
+    const iframe = Iframe.create();
 
     const timeout = setTimeout(() => {
-      cleanup();
+      Iframe.delete(iframe);
       reject(TimeoutExpiredError);
     }, 30000);
 
-    return captureWindowMessage(iframe).then((message) => {
-      const { error, accessToken: token } = message;
+    return Iframe
+      .captureMessage(iframe, URLCreator.createRenewSessionURL())
+      .then((message) => {
+        clearTimeout(timeout);
 
-      if (error) {
-        reject(error);
-      }
+        const { error, accessToken: token } = message;
 
-      clearTimeout(timeout);
-      cleanup();
+        if (error) {
+          reject(error);
+        }
 
-      const body = tokenService.decode(token);
+        Iframe.delete(iframe);
 
-<<<<<<< HEAD
-      resolve({ token, body });
-    });
-=======
-    window.addEventListener('message', handleMessage);
-    const renewSessionURL = URLCreator.createRenewSessionURL();
-    iframe.src = renewSessionURl;
->>>>>>> master
+        const body = tokenService.decode(token);
+
+        resolve({ token, body })
+      });
   });
 
-  const register = () => {
-    const registrationURL = URLCreator.createRegistrationURL();
-    window.location.assign(registerURL);
-  }
+  const register = function () {
+    window.location.assign(URLCreator.createRegistrationURL());
+  };
 
-  return {
-    handleAuthentication,
+  return Object.freeze({
     login,
     register,
     renewSession,
-  };
+    handleAuthentication,
+  });
 };
 
 export default init;

@@ -11,7 +11,7 @@ const Iframe = {
   },
 
   captureMessage(iframe, src) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const handleMessage = (event) => {
         if (event.origin === window.location.origin) {
           return;
