@@ -46,22 +46,19 @@ const init = function (options) {
       reject(TimeoutExpiredError);
     }, 30000);
 
-    return Iframe
+    Iframe
       .captureMessage(iframe, URLCreator.createRenewSessionURL())
-      .then((message) => {
+      .then(({ error, accessToken: token }) => {
         clearTimeout(timeout);
-
-        const { error, accessToken: token } = message;
 
         if (error) {
           reject(error);
         }
 
-        Iframe.delete(iframe);
-
         const body = tokenService.decode(token);
 
-        resolve({ token, body })
+        Iframe.delete(iframe);
+        resolve({ token, body });
       });
   });
 
