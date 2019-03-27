@@ -4,7 +4,7 @@ import initTokenService from './tokenService';
 const NoAccessTokenError = Error('Access token is empty');
 const TimeoutExpiredError = Error('Timeout expired');
 
-export default (options) => {
+const init = function (options) {
   const error = validateOptions(options);
 
   if (error) {
@@ -18,7 +18,7 @@ export default (options) => {
 
   const scopes = JSON.stringify(options.scopes);
 
-  const handleAuthentication = () => {
+  const handleAuthentication = function () {
     const token = tokenService.parseTokenFromURL(window.location);
     window.location.hash = '';
 
@@ -31,46 +31,61 @@ export default (options) => {
     return { token, body };
   };
 
-  const login = () => {
+  const login = function () {
     const loginURL = `${options.authServerURI}/web/login?appId=${options.appId}&scopes=${scopes}`;
     window.location.assign(loginURL);
   };
 
-  const renewSession = () => new Promise((res, rej) => {
+  const createIframe = function () {
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none';
     document.body.appendChild(iframe);
+    return iframe;
+  };
 
-    const cleanup = () => {
-      document.body.removeChild(iframe);
-      window.removeEventListener('message', handleMessage);
-      clearTimeout(timeout);
-    }
-
-    const timeout = setTimeout(() => {
-      cleanup();
-      rej(TimeoutExpiredError);
-    }, 30000);
-
-    const handleMessage = message => {
+  const captureWindowMessage = iframe => new Promise((resolve, reject) => {
+    const handleMessage = (event) => {
       if (event.origin === window.location.origin) {
         return;
       }
 
-      cleanup();
+      resolve(event.data);
 
-      const { error, accessToken: token } = message.data;
-
-      if (message.data.error) {
-        rej(message.data.error);
-      }
-
-      const body = tokenService.decode(token);
-      res({ body, token });
+      window.removeEventListener('message', handleMessage);
     };
 
     window.addEventListener('message', handleMessage);
-    iframe.src = `${options.authServerURI}/web/token/renew?appId=${options.appId}&scopes=${scopes}`;
+
+    // iframe.src = `${options.authServerURI}/web/token/renew?appId=${options.appId}&scopes=${scopes}`;
+    iframe.embed();
+  });
+
+  const renewSession = () => new Promise((resolve, reject) => {
+    const iframe = createIframe();
+
+    const cleanup = () => {
+      document.body.removeChild(iframe);
+    }
+
+    const timeout = setTimeout(() => {
+      cleanup();
+      reject(TimeoutExpiredError);
+    }, 30000);
+
+    return captureWindowMessage(iframe).then((message) => {
+      const { error, accessToken: token } = message;
+
+      if (error) {
+        reject(error);
+      }
+
+      clearTimeout(timeout);
+      cleanup();
+
+      const body = tokenService.decode(token);
+
+      resolve({ token, body });
+    });
   });
 
   const register = () => {
@@ -85,3 +100,5 @@ export default (options) => {
     renewSession,
   };
 };
+
+export default init;
