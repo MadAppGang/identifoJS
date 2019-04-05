@@ -3,16 +3,12 @@ import tokenVerifier from 'idtoken-verifier';
 const initTokenService = (options) => {
   const tokenService = new tokenVerifier(options);
 
-  const parseTokenFromURL = (urlStr) => {
-    const url = new URL(urlStr);
-    
-    return url.hash.replace(/^#?\/?/, '');
-  }
+  const parseTokenFromURL = ({ hash }) => hash.replace(/^#?\/?/, '');
 
-  return {
+  return Object.freeze({
     parseTokenFromURL,
     decode: tokenService.decode,
-  };
+  });
 };
 
 export default initTokenService
