@@ -2,34 +2,48 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import json from 'rollup-plugin-json';
+import { terser } from 'rollup-plugin-terser';
+import { argv } from 'yargs';
+
+const isProduction = argv.prod === true;
+
 import pkg from './package.json';
 
-export default [
-	// browser-friendly UMD build
+const files = [
 	{
 		input: 'src/index.js',
 		output: {
-			name: 'IdentifoJS',
-			file: pkg.browser,
-			format: 'umd'
+			name: 'identifo-js',
+			file: pkg.main,
+			format: 'umd',
+			sourcemap: true,
+			exports: 'named',
 		},
 		plugins: [
 			resolve({ browser: true }),
 			commonjs(),
 			json(),
 			babel({ exclude: 'node_modules/**' }),
+			isProduction && terser({
+        compress: { warnings: false },
+        output: { comments: false },
+        mangle: false
+      }),
 		]
 	},
-
-	// ES module (for bundlers) build.
 	{
 		input: 'src/index.js',
 		external: ['idtoken-verifier'],
     plugins: [
-			resolve(),
+			resolve({ browser: true }),
 			commonjs(),
 			json(),
-      babel({ exclude: 'node_modules/**' }),
+			babel({ exclude: 'node_modules/**' }),
+			isProduction && terser({
+        compress: { warnings: false },
+        output: { comments: false },
+        mangle: false
+      }),
     ],
 		output: {
 			file: pkg.module,
@@ -38,3 +52,5 @@ export default [
 		},
 	}
 ];
+
+export default files;

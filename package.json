@@ -1,12 +1,12 @@
 {
   "name": "@madappgang/identifo-js",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Library for web-auth through Identifo",
   "module": "dist/identifo-js.esm.js",
-  "browser": "dist/identifo-js.umd.js",
+  "main": "dist/identifo-js.js",
   "scripts": {
     "start": "rollup -c -w",
-    "build": "rollup -c",
+    "build": "rm -rf dist && rollup -c --prod",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -30,6 +30,8 @@
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.1",
     "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^4.0.1"
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-terser": "^4.0.4",
+    "yargs": "^13.2.2"
   }
 }
