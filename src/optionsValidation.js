@@ -1,11 +1,11 @@
 import {
-  initValidator, requiredRule, makeValidTypeRule, validURLRule,
+  initValidator,requiredRule, makeTypeValidationRule, URLValidationRule,
 } from './validation'
 
 const optionsRules = {
-  'authServerURI': [requiredRule, makeValidTypeRule({ type: 'string' }), validURLRule],
-  'appId': [requiredRule, makeValidTypeRule({ type: 'string' })],
-  'scopes': [requiredRule, makeValidTypeRule({ type: 'array' })],
+  authServerURI: [requiredRule, makeTypeValidationRule({ type: 'string' }), URLValidationRule],
+  appId: [requiredRule, makeTypeValidationRule({ type: 'string' })],
+  scopes: [requiredRule, makeTypeValidationRule({ type: 'array' })],
 };
 
 export default initValidator(optionsRules);

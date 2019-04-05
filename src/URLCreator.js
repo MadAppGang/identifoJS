@@ -1,4 +1,9 @@
-export default ({ scopes, appId, authServerURI }) => {
+const initURLCreator = (options) => {
+  if (!options) {
+    throw Error('Options have to be an object.')
+  }
+
+  const { scopes, appId, authServerURI } = options;
   const scopesJSON = JSON.stringify(scopes);
 
   return Object.freeze({
@@ -13,3 +18,5 @@ export default ({ scopes, appId, authServerURI }) => {
     },
   });
 };
+
+export default initURLCreator;
