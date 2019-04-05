@@ -37,7 +37,7 @@ const init = function (options) {
     const iframe = Iframe.create();
 
     const timeout = setTimeout(() => {
-      Iframe.delete(iframe);
+      Iframe.remove(iframe);
       reject(TimeoutExpiredError);
     }, 30000);
 
@@ -52,7 +52,7 @@ const init = function (options) {
 
         const body = tokenService.decode(token);
 
-        Iframe.delete(iframe);
+        Iframe.remove(iframe);
         resolve({ token, body });
       });
   });
