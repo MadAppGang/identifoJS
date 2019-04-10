@@ -16,6 +16,9 @@ const initURLCreator = (options) => {
     createRegistrationURL() {
       return `${authServerURI}/web/register?appId=${appId}&scopes=${scopesJSON}`
     },
+    createLogoutURL() {
+      return `${authServerURI}/web/logout?appId=${appId}&scopes=${scopesJSON}`;
+    }
   });
 };
 

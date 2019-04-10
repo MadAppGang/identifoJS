@@ -65,8 +65,13 @@ const init = function (options) {
     window.location.assign(URLCreator.createRegistrationURL());
   };
 
+  const logout = function () {
+    window.location.assign(URLCreator.createLogoutURL());
+  }
+
   return Object.freeze({
     login,
+    logout,
     register,
     renewSession,
     handleAuthentication,

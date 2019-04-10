@@ -32,4 +32,9 @@ describe('URLCreator', () => {
     expect(URLCreator.createRegistrationURL())
       .toBe('https://page.com/web/register?appId=appId&scopes=["scope-1","scope-2"]');
   })
+
+  test('create logout url', () => {
+    expect(URLCreator.createLogoutURL())
+      .toBe('https://page.com/web/logout?appId=appId&scopes=["scope-1","scope-2"]')
+  })
 });
