@@ -37,3 +37,4 @@ The pacakge exports the only function that will initialize identifo client.
     .catch(() => identifo.login()) // If there's an error you should try to login, probably user hasn't established SSO session.
 ```
 - **identifo.register** redirects user to the registration page.
+- **identifo.logout** removes SSO session.
