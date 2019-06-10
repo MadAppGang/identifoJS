@@ -47,6 +47,7 @@ const init = function (options) {
         clearTimeout(timeout);
 
         if (error) {
+          Iframe.remove(iframe);
           reject(error);
         }
 

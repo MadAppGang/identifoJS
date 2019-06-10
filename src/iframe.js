@@ -7,7 +7,9 @@ const Iframe = {
   },
 
   remove(iframe) {
-    document.body.removeChild(iframe);
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+    }, 0);
   },
 
   captureMessage(iframe, src) {
@@ -22,7 +24,7 @@ const Iframe = {
         window.removeEventListener('message', handleMessage);
       };
 
-      window.addEventListener('message', handleMessage);
+      window.addEventListener('message', handleMessage, false);
 
       iframe.src = src;
     });
