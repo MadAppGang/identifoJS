@@ -8,7 +8,9 @@ const Iframe = {
 
   remove(iframe) {
     setTimeout(() => {
-      document.body.removeChild(iframe);
+      if (document.body.contains(iframe)) {
+        document.body.removeChild(iframe);
+      }
     }, 0);
   },
 
