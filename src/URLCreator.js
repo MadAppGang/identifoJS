@@ -8,16 +8,16 @@ const initURLCreator = (options) => {
 
   return Object.freeze({
     createLoginURL() {
-      return `${authServerURI}/web/login?appId=${appId}&scopes=${scopesJSON}&callbackURL=${callbackURL}`
+      return `${authServerURI}/web/login?appId=${appId}&scopes=${scopesJSON}&callbackUrl=${callbackURL}`
     },
     createRenewSessionURL() {
-      return `${authServerURI}/web/token/renew?appId=${appId}&scopes=${scopesJSON}&callbackURL=${callbackURL}`;
+      return `${authServerURI}/web/token/renew?appId=${appId}&scopes=${scopesJSON}&callbackUrl=${callbackURL}`;
     },
     createRegistrationURL() {
-      return `${authServerURI}/web/register?appId=${appId}&scopes=${scopesJSON}&callbackURL=${callbackURL}`
+      return `${authServerURI}/web/register?appId=${appId}&scopes=${scopesJSON}&callbackUrl=${callbackURL}`
     },
     createLogoutURL() {
-      return `${authServerURI}/web/logout?appId=${appId}&scopes=${scopesJSON}&callbackURL=${callbackURL}`;
+      return `${authServerURI}/web/logout?appId=${appId}&scopes=${scopesJSON}&callbackUrl=${callbackURL}`;
     }
   });
 };
