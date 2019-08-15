@@ -16,6 +16,7 @@ The pacakge exports the only function that will initialize identifo client.
     authServerURI: 'http://localhost:8080', // URI of your Identifo server.
     appId: '59fd884d8f6b180001f5b4e3', // ID of application that you want to get access to.
     scopes: ['chat'], // Scopes that you want to request.
+    callbackURL: 'http://localhost:3000/callback', // URL that you will be redirected after a success login.
   };
 
   const identifo = initIdentifo(options);
