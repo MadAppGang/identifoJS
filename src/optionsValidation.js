@@ -9,4 +9,10 @@ const optionsRules = {
   scopes: [requiredRule, makeTypeValidationRule({ type: 'array' })],
 };
 
+const renewSessionOptionsRules = {
+  redirectUri: [requiredRule, makeTypeValidationRule({ type: 'string'}), URLValidationRule],
+};
+
+export const validateRenewSessionOptions = initValidator(renewSessionOptionsRules);
+
 export default initValidator(optionsRules);

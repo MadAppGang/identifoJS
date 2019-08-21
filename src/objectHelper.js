@@ -1,0 +1,1 @@
+export const merge = (...args) => args.reduce((a, b) => ({ ...a, ...b}), {});

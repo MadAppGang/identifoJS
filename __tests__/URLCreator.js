@@ -25,8 +25,8 @@ describe('URLCreator', () => {
   });
 
   test('create renew session url', () => {
-    expect(URLCreator.createRenewSessionURL())
-      .toBe('https://page.com/web/token/renew?appId=appId&scopes=["scope-1","scope-2"]&callbackUrl=https://site.com/callback');
+    expect(URLCreator.createRenewSessionURL({ redirectUri: 'https://site.com' }))
+      .toBe('https://page.com/web/token/renew?appId=appId&scopes=["scope-1","scope-2"]&redirectUri=https://site.com');
   })
 
   test('create registration url', () => {
