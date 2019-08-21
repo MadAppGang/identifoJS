@@ -1,10 +1,15 @@
-import validateOptions from './optionsValidation';
+import validateOptions, { validateRenewSessionOptions } from './optionsValidation';
 import initTokenService from './tokenService';
 import initURLCreator from './URLCReator';
 import Iframe from './iframe';
+import * as objectHelper from './objectHelper';
 
 const NoAccessTokenError = Error('Access token is empty');
 const TimeoutExpiredError = Error('Timeout expired');
+
+const renewSessionBaseOptions = {
+  redirectUri: window.origin,
+};
 
 const init = function (options) {
   const error = validateOptions(options);
@@ -33,7 +38,14 @@ const init = function (options) {
     return { token, body };
   };
 
-  const renewSession = () => new Promise((resolve, reject) => {
+  const renewSession = (params = {}) => new Promise((resolve, reject) => {
+    const options = objectHelper.merge(renewSessionBaseOptions, params);
+    const error = validateRenewSessionOptions(options);
+
+    if (error) {
+      throw error;
+    }
+
     const iframe = Iframe.create();
 
     const timeout = setTimeout(() => {
@@ -42,7 +54,7 @@ const init = function (options) {
     }, 30000);
 
     Iframe
-      .captureMessage(iframe, URLCreator.createRenewSessionURL())
+      .captureMessage(iframe, URLCreator.createRenewSessionURL(options))
       .then(({ error, accessToken: token }) => {
         clearTimeout(timeout);
 

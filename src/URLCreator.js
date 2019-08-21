@@ -10,8 +10,8 @@ const initURLCreator = (options) => {
     createLoginURL() {
       return `${authServerURI}/web/login?appId=${appId}&scopes=${scopesJSON}&callbackUrl=${callbackURL}`
     },
-    createRenewSessionURL() {
-      return `${authServerURI}/web/token/renew?appId=${appId}&scopes=${scopesJSON}&callbackUrl=${callbackURL}`;
+    createRenewSessionURL(options = {}) {
+      return `${authServerURI}/web/token/renew?appId=${appId}&scopes=${scopesJSON}&redirectUri=${options.redirectUri}`;
     },
     createRegistrationURL() {
       return `${authServerURI}/web/register?appId=${appId}&scopes=${scopesJSON}&callbackUrl=${callbackURL}`
